@@ -1,0 +1,151 @@
+﻿Program Proc2;
+{
+ The program displays the result of the calculation using two matrices with initial data, according to the formula (2*A - (A^2 + B)*B).
+}
+
+// Determining the type of console program.
+{$APPTYPE CONSOLE}
+
+// Setting the name of the module.
+uses
+  System.SysUtils;
+
+// Adding types for subroutines.
+Type
+  TMatrix = Array of Array of Integer;
+
+// Displaying matrices on the screen.
+{
+ Given the matrix Concl. The procedure displays the values ​​of the elements of the given matrix.
+}
+Procedure OutPut(Var Concl: TMatrix; M1: integer);
+
+// I, J - auxiliary variables for the iteration loop.
+Var
+  I, J: Integer;
+Begin
+  For I := 1 to M1 do
+  begin
+    For J := 1 to M1 do
+      write(Concl[I,J]: 5);
+    writeln;
+  end;
+  writeln;
+End;
+
+// Finding the product of matrices.
+{
+ Given matrices A, B. The procedure finds the matrix Result by multiplying the matrices A and B.
+}
+Procedure ProizvMatrix(Var A, B, Result: TMatrix; M1: integer);
+
+// I, J, K - auxiliary variables for the iteration loop;
+// Sum - finds the elements of matrix Result.
+Var
+  I, J, K: integer;
+  Sum: Integer;
+Begin
+  For I := 1 to M1 do
+  begin
+    For J := 1 to M1 do
+    begin
+      Sum := 0;
+      For K := 1 to 3 do
+        Sum := Sum + A[I,K]*B[K,J];
+
+      Result[I,J] := Sum;
+    end;
+  end;
+  Output(Result, M1);
+End;
+
+// Finding the sum of matrices.
+{
+ Matrices A, B are given. The procedure finds the matrix Result by summing the elements of the matrix A and B.
+}
+Procedure SumMatrix(Var A, B, Result: TMatrix; Flag: Boolean; M1: integer);
+
+// I, J - auxiliary variables for the iteration loop.
+Var
+  I, J: integer;
+Begin
+  For I := 1 to M1 do
+  begin
+    For J := 1 to M1 do
+      If Flag then
+        Result[I,J] := A[I,J] - B[I,J]
+      else
+        Result[I,J] := A[I,J] + B[I,J];
+  end;
+  Output(Result, M1);
+End;
+
+// Finding the product of the matrix A and the number N.
+{
+ Given a matrix A and a number N. The procedure finds the matrix Result by multiplying each element of the matrix A by the number N.
+}
+Procedure NumberProizv(Const N: integer;
+                       Var A, Result: TMatrix; M1: integer);
+
+// I, J - auxiliary variables for the iteration loop.
+Var
+  I, J: Integer;
+Begin
+  For I := 1 to M1 do
+    For J := 1 to M1 do
+      Result[I,J] := A[I,J]*N;
+  OutPut(Result, M1);
+End;
+
+// Assign certain data types to variables.
+Var
+  Matrix1, Matrix2, Matrix3, Matrix4, C: TMatrix;
+  MatrixA: TMatrix;
+  MatrixB: TMatrix;
+  s, s1: string;
+  I, M, J: integer;
+  {
+   Matrix1, Matrix2, Matrix3, Matrix4, C - auxiliary matrices;
+   MatrixA, MatrixB - input matrices.
+  }
+
+Begin
+
+
+  for I := 1 to M do
+  begin
+    for J := 1 to M do
+    begin
+      read(MatrixA[I,J]);
+    end;
+  end;
+
+  for I := 1 to M do
+  begin
+    for J := 1 to M do
+    begin
+      read(MatrixA[I,J]);
+    end;
+  end;
+
+  // Finding an expression A^2
+  writeln('A^2 = ');
+  ProizvMatrix(MatrixA, MatrixA, Matrix1, M);
+
+  // Finding an expression A^2+B.
+  writeln('A^2+B =');
+  SumMatrix(Matrix1, MatrixB, Matrix2, False, M);
+
+  // Finding an expression (A^2+B)*B.
+  writeln('(A^2+B)*B =');
+  ProizvMatrix(Matrix2, MatrixB, Matrix3, M);
+
+  // Finding an expression 2*A.
+  writeln('2*A =');
+  NumberProizv(2, MatrixA, Matrix4, M);
+
+  // Finding the final expression.
+  writeln('2*A-(A^2+B)*B =');
+  SumMatrix(Matrix4, Matrix3, C, True, M);
+  readln;
+End.

@@ -1,0 +1,23 @@
+
+
+
+// Subprogram for outputting the matrix
+{
+  A matrix X1 is given. The procedure outputs the
+  formatted values of the matrix elements.
+}
+Procedure OutputMat(Const X1:TMatrix);
+
+// Declaring counter variables
+Var
+  i,j:Integer;
+
+Begin
+  For i:=1 to 3 do
+  Begin
+    For j:=1 to 3 do
+      Write(X1[i,j]:6);
+    Writeln
+  End;
+  Writeln
+End;

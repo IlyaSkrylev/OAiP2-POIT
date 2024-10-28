@@ -1,0 +1,47 @@
+program Project2;
+
+{$APPTYPE CONSOLE}
+
+uses
+  System.SysUtils;
+
+Function NumberString(Var N: integer): String;
+begin
+  Case N of
+    1..9: Result := '   ' + IntToStr(N);
+    10..99: Result := '  ' + IntToStr(N);
+    100..999: Result := ' ' + IntToStr(N);
+    1000..9999: Result := IntToStr(N);
+  End;
+end;
+
+Procedure EnterNumString(Var OldF, NewF: TextFile);
+Var
+  N: Integer;
+  S: String;
+Begin
+  Reset(OldF);
+  Rewrite(NewF);
+  N := 1;
+  While not Eof(OldF) do
+  begin
+    Readln(OldF, S);
+    Write(NewF,NumberString(N), '. ');
+    Writeln(NewF,S);
+    Inc(N);
+  end;
+  CloseFile(NewF);
+  CloseFile(OldF);
+End;
+
+Var
+  F1, F2: TextFile;
+  N: Integer;
+  S: String;
+  Num: String[4];
+
+begin
+  AssignFile(F1, 'G:\Работы\2 семестр\ОАиП\Лаб №10\F1.txt');
+  AssignFile(F2, 'G:\Работы\2 семестр\ОАиП\Лаб №10\F2.txt');
+  EnterNumString(F1, F2);
+end.

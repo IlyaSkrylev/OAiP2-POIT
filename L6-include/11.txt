@@ -1,0 +1,19 @@
+// Description of constant variables
+Const
+  MatrixA: TMatrix = ((1,4,2),(2,1,-2),(0,1,-1));
+  MatrixB: TMatrix = ((4,6,-2),(4,10,1),(2,4,-5));
+
+
+{$I G:\1.txt}
+
+Begin
+
+  // Derivation of input matrices.
+  Writeln('MatrixA = ');
+  OutPut(MatrixA);
+  Writeln('MatrixB = ');
+  OutPut(MatrixB);
+
+  // Derivation of the final matrix.
+  OutPut(SumMatrix(NumberProizv(2, MatrixA), ProizvMatrix(SumMatrix(ProizvMatrix(MatrixA, MatrixA, False), MatrixB, False), MatrixB, True), True));
+  readln;

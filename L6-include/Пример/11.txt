@@ -1,0 +1,72 @@
+// Determining the type for matrixes
+
+
+// Declaring the initial matrixes used in the expression
+Const
+  A:TMatrix=((2,3,1),(-1,2,4),(5,3,0));
+  B:TMatrix=((2,7,13),(-1,0,5),(5,13,21));
+
+// Variable declaration section
+Var
+  Temp1,Temp2,Temp3:TMatrix;
+{
+  Temp1, Temp2, Temp3 - arrays that keep the value of
+  intermediate calculations.
+}
+
+
+// Subprogram for calculating the sum of matrixes
+{
+  Two matrixes (X1, Y1) of the same size are given.
+  The subprogram returns the matrix that is equal
+  to the result of summation or subtraction of
+  the given matrixes.
+}
+
+
+// Subprogram for multiplying the matrix by a number
+{
+  The X1 matrix and the multiplier M1 are given. The
+  subprogram returns the value of the matrix multiplied by
+  a number.
+}
+
+
+
+{$I G:\Работы\2 семестр\ОАиП\Лаб №1\Delphi Include\Пример\1.txt}
+
+
+
+Begin
+
+  // Outputting the initial matrixes
+  Writeln('Matrix A');
+  OutputMat(A);
+  Writeln('Matrix B');
+  OutputMat(B);
+
+  Writeln('A*A');
+  MultiplyMat(A,A,Temp1);
+  OutputMat(Temp1);
+
+  Writeln('A*A-B');
+  SumMat(Temp1,B,False,Temp2);
+  OutputMat(Temp2);
+
+  Writeln('A(A*A-B)');
+  MultiplyMat(A,Temp2,Temp3);
+  OutputMat(Temp3);
+
+  Writeln('B+A');
+  SumMat(B,A,True,Temp1);
+  OutputMat(Temp1);
+  MultiplyMat(Temp1,B,Temp2);
+
+  Writeln('2*B(B+A)');
+  MultiplyMatConst(2,Temp2,Temp1);
+  OutputMat(Temp1);
+  // Subtracting Temp1 matrix from Temp3
+  Writeln('A*(A*A-B)-2*(B+A)*B');
+  SumMat(Temp3,Temp1,False,Temp2);
+  OutputMat(Temp2);
+  Readln

@@ -1,0 +1,43 @@
+interface
+Type
+  TMatrix = Array [1..3,1..3] of Integer;
+  Procedure SumMat(Const X1,Y1:TMatrix;
+                 Const Sign: Boolean;
+                 Var Res:TMatrix);
+  Procedure MultiplyMatConst(Const N1:Integer;
+                           Const X1:TMatrix;
+                           Var Res:TMatrix);
+implementation
+  Procedure SumMat;
+
+// Variable declaration section
+Var
+  i,j,k:integer;
+
+{
+  i,j - counter variables;
+  k - sign variable.
+}
+
+Begin
+  // Determining the coefficient value
+  If Sign then
+    k:=1
+  Else
+    k:=-1;
+  For i:=1 to 3 do
+    For j:=1 to 3 do
+      Res[i,j]:=X1[i,j]+k*Y1[i,j];
+End;
+
+Procedure MultiplyMatConst;
+
+// Declaring counter variables
+Var
+  i,j:integer;
+
+Begin
+  For i:=1 to 3 do
+    For j:=1 to 3 do
+      Res[i,j]:=N1*X1[i,j];
+End;

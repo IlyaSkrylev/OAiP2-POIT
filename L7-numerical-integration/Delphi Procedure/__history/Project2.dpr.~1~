@@ -1,0 +1,103 @@
+Program Project2;
+
+{$APPTYPE CONSOLE}
+
+uses
+  System.SysUtils;
+
+Const
+  Eps1 = 1E-5;
+  Eps2 = 1E-6;
+  XStart1 = 0.6;
+  XFinish1 = 1.4;
+  XStart2 = 0.2;
+  XFinish2 = 0.8;
+
+Type
+  TResult = Array[1..4,1..2] of Real;
+  TIntegral = Function(X:Real): Real;
+  TRes = Function(F: TIntegral; Const Dist,Left,Right: Real): Real;
+
+Function F_1(X: Real): Real; Far;
+Begin
+  F_1 := Sqrt(Sqr(X) + 0.5)/(2*X + Sqrt(sqr(X) + 2.5));
+End;
+
+Function F_2(X: Real): Real; Far;
+Begin
+  F_2 := cos(sqr(x) + 1)/(2 + sin(2*X + 0.5));
+End;
+
+Function RightRectangle(F: TIntegral; Const Dist, Left, Right: Real): Real;
+Begin
+  RightRecTangle := F(Right)*Dist;
+End;
+
+Function Trapezoid(F: TIntegral; Const Dist, Left, Right: Real): Real;
+Begin
+  Trapezoid := ((F(Left) + F(Right))/2)*Dist;
+End;
+
+Function FindResult(F: TRes; Func: TIntegral; Const XStart, XFinish: Real; Const I: Byte): TResult;
+Var
+  Delta, A, H, B: Real;
+  Flag: Boolean;
+  Tmp: Real;
+  N, J: Integer;
+Begin
+  Flag := True;
+  N := 2;
+  H := (XFinish - XStart)/N;
+  B := XStart +  H;
+  Tmp := F(Func, H, A, B);
+  Delta := abs(Result[I,1]) - abs(Tmp);
+  While abs(Delta) > Eps2 do
+  begin
+    H := (XFinish - XStart)/N;
+    A := XStart;
+    B := A + H;
+    Result[I,1] := 0;
+    For J := 1 to N do
+    begin
+      Result[I,1] := Result[I,1] + F(Func, H, A, B);
+      A := A + H;
+      B := A + H;
+    end;
+    Delta := abs(Result[I,1]) - abs(Tmp);
+    If (abs(Delta) <= Eps1) and Flag then
+    begin
+      Result[I-1,1] := Result[I,1];
+      Result[I-1,2] := N;
+      Flag := False;
+    end;
+    Tmp := Result[I,1];
+    Inc(N);
+  end;
+  Result[I,2] := N-1;
+End;
+
+Var
+  RRec, Trap: TResult;
+  I : Integer;
+begin
+  RRec := FindResult(RightRectangle, F_1, XStart1, XFinish1, 2);
+  RRec := FindResult(RightRectangle, F_2, XStart2, XFinish2, 4);
+  Trap := FindResult(Trapezoid, F_1, XStart1, XFinish1, 2);
+  Trap := FindResult(Trapezoid, F_2, XStart2, XFinish2, 4);
+
+  writeln(' _______________________________________________________________________________________ ');
+  writeln('|               |                 F1                |                 F2                |');
+  writeln('|     Метод     |___________________________________|___________________________________|');
+  writeln('|               |   Eps1 =  |  N  |   Eps2 =  |  N  |   Eps1 =  |  N  |   Eps2 =  |  N  |');
+  writeln('|               |', Eps1:9, ' |     |', Eps2:9, ' |     |', Eps1:9, ' |     |', Eps2:9, ' |     |');
+  writeln('|_______________|___________|_____|___________|_____|___________|_____|___________|_____|');
+  writeln('|               |           |     |           |     |           |     |           |     |');
+  writeln('| Правых прямо- |  ', RRec[1,1]:7:5,'  | ', RRec[1,2]:2:0,'  |  ', RRec[2,1]:7:6,' | ', RRec[2,2]:2:0,'  |  ', RRec[3,1]:7:5,'  | ', RRec[3,2]:3:0,' |  ', RRec[4,1]:7:6,' | ', RRec[4,2]:3:0,' | ');
+  writeln('| угольников    |           |     |           |     |           |     |           |     |');
+  writeln('|_______________|___________|_____|___________|_____|___________|_____|___________|_____|');
+  writeln('|               |           |     |           |     |           |     |           |     |');
+  writeln('| Трапеции      |  ', Trap[1,1]:7:5,'  | ', Trap[1,2]:2:0,'  |  ', Trap[2,1]:7:6,' | ', Trap[2,2]:3:0,' |  ', Trap[3,1]:7:5,'  | ', Trap[3,2]:3:0,' |  ', Trap[4,1]:7:6,' | ', Trap[4,2]:3:0,' | ');
+  writeln('|_______________|___________|_____|___________|_____|___________|_____|___________|_____|');
+
+  readln;
+end.

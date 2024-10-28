@@ -1,0 +1,40 @@
+program Project2;
+
+{$APPTYPE CONSOLE}
+
+uses
+  System.SysUtils;
+
+Var
+  F1, F2: TextFile;
+  N: Integer;
+  S: String;
+  Num: String[4];
+
+begin
+  AssignFile(F1, 'G:\Работы\2 семестр\ОАиП\Лаб №10\F1.txt');
+  AssignFile(F2, 'G:\Работы\2 семестр\ОАиП\Лаб №10\F2.txt');
+  Reset(F1);
+  Rewrite(F2);
+  N := 1;
+  While not Eof(F1) do
+  begin
+    If N < 10 then
+      Num := '   ' + IntToStr(N)
+    else
+      if N < 100 then
+        Num := '  ' + IntToStr(N)
+      else
+        if N < 1000 then
+          Num := ' ' + IntToStr(N)
+        else
+          Num := IntToStr(N);
+
+    Readln(F1, S);
+    Write(F2,Num, '. ');
+    Writeln(F2,S);
+    Inc(N);
+  end;
+  CloseFile(F2);
+  CloseFile(F1);
+end.
